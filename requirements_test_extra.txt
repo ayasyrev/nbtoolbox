@@ -1,0 +1,5 @@
+coverage[toml]
+nox
+black
+black[jupyter]
+flake8
