@@ -43,10 +43,11 @@ def get_commands(text: str) -> list[Command]:
         if command is not None:
             commands[command.level].append(command)
 
-    return [
-        Command(level, [cmd.commands[0] for cmd in command_list])
-        for level, command_list in commands.items()
-    ]
+    return list(
+        Command(level.value, [cmd.commands[0] for cmd in commands[level.value]])
+        for level in CommandLevel
+        if level.value in commands
+    )
 
 
 def parse_command(line: str) -> Optional[Command]:

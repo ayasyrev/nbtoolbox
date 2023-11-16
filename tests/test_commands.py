@@ -32,12 +32,12 @@ def test_get_commands():
     assert commands[0] == Command("source", ["hide"])
     commands = get_commands("\n".join([source_command, cell_command]))
     assert len(commands) == 2
-    assert commands[0] == Command("source", ["hide"])
-    assert commands[1] == Command("cell", ["hide"])
+    assert commands[0] == Command("cell", ["hide"])
+    assert commands[1] == Command("source", ["hide"])
 
     commands = get_commands(
         "\n".join([source_command, cell_command, cell_command_simple])
     )
     assert len(commands) == 2
-    assert commands[0] == Command("source", ["hide"])
-    assert commands[1] == Command("cell", ["hide", "collapse"])
+    assert commands[0] == Command("cell", ["hide", "collapse"])
+    assert commands[1] == Command("source", ["hide"])
