@@ -1,4 +1,6 @@
-from .typing import Nb, CodeCell, MarkdownCell, RawCell, Metadata
+import copy
+from typing import Optional
+from .typing import Nb, Cell, CodeCell, Metadata, Output, MultilineText
 
 
 def process_nb_metadata(metadata: Metadata) -> Metadata:
@@ -6,28 +8,44 @@ def process_nb_metadata(metadata: Metadata) -> Metadata:
     return metadata
 
 
-def process_md_cell(cell: MarkdownCell) -> MarkdownCell:
-    pass
+def process_md_cell(cell: Cell) -> Cell:
+    return cell
+
+
+def process_source(source: MultilineText) -> str:
+    if isinstance(source, str):
+        return source
+    else:
+        return "\n".join(source)
+
+
+def process_output(output: Output) -> Output:
+    return output
 
 
 def process_code_cell(cell: CodeCell) -> CodeCell:
-    pass
+    cell["source"] = process_source(cell["source"])
+    cell["outputs"] = [process_output(output) for output in cell["outputs"]]
 
 
-def process_raw_cell(cell: RawCell) -> RawCell:
-    pass
+class Processor:
+    _nb: Nb  # place to store copy of last processed Nb
 
+    def __init__(
+            self,
+            cfg: Optional[dict] = None,
+    ):
+        self.cfg = cfg or {}
+        self.cell_processors = {
+            "markdown": process_md_cell,
+            "code": process_code_cell,
+            "raw": process_md_cell
+        }
 
-cell_processors = {
-    "markdown": process_md_cell,
-    "code": process_code_cell,
-    "raw": process_raw_cell
-}
-
-
-def process_nb(nb: Nb) -> Nb:
-    """Process notebook"""
-    process_nb_metadata(nb["metadata"])
-    for cell in nb["cells"]:
-        cell_processors[cell["cell_type"]](cell)
-    return nb
+    def run(self, nb: Nb) -> Nb:
+        """Process notebook"""
+        self._nb = copy.deepcopy(nb)
+        process_nb_metadata(nb["metadata"])  # to do: class method or plugin
+        for cell in nb["cells"]:
+            self.cell_processors[cell["cell_type"]](cell)
+        return nb
