@@ -24,7 +24,9 @@ class Output(TypedDict):
 
 
 class ExecuteResult(Output):  # output_type = "execute_result"
-    data: Dict[str, MultilineText]  # mimebundle - "A mime-type keyed dictionary of data"
+    data: Dict[
+        str, MultilineText
+    ]  # mimebundle - "A mime-type keyed dictionary of data"
     metadata: Metadata
     execution_count: Optional[int]
 
@@ -47,6 +49,7 @@ class Error(Output):  # output_type = "error"
 
 class Cell(TypedDict):
     """Notebook cell base."""
+
     id: int  # from nbformat 4.5
     cell_type: Literal["code", "markdown", "raw"]
     metadata: Metadata
@@ -56,12 +59,14 @@ class Cell(TypedDict):
 
 class CodeCell(Cell):  # cell_type = "code"
     """Code cell."""
+
     outputs: List[Output]
     execution_count: Optional[int]
 
 
 class Nb(TypedDict):
     """Notebook."""
+
     nbformat: int
     nbformat_minor: int
     cells: List[Cell]

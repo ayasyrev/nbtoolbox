@@ -32,14 +32,14 @@ class Processor:
     _nb: Nb  # place to store copy of last processed Nb
 
     def __init__(
-            self,
-            cfg: Optional[dict] = None,
+        self,
+        cfg: Optional[dict] = None,
     ):
         self.cfg = cfg or {}
         self.cell_processors = {
             "markdown": process_md_cell,
             "code": process_code_cell,
-            "raw": process_md_cell
+            "raw": process_md_cell,
         }
 
     def run(self, nb: Nb) -> Nb:
