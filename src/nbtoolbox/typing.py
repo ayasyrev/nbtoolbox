@@ -21,19 +21,16 @@ class Output(TypedDict):
         "stream",
         "error",
     ]
+    execution_count: Optional[int]
+    metadata: Metadata
 
 
 class ExecuteResult(Output):  # output_type = "execute_result"
-    data: Dict[
-        str, MultilineText
-    ]  # mimebundle - "A mime-type keyed dictionary of data"
-    metadata: Metadata
-    execution_count: Optional[int]
+    data: Dict[str, MultilineText]  # mimebundle - "A mime-type keyed dictionary of data"
 
 
 class DisplayData(Output):  # output_type = "display_data"
     data: Dict[str, MultilineText]  # fix it - mimebundle
-    metadata: Metadata
 
 
 class Stream(Output):  # output_type = "stream"
