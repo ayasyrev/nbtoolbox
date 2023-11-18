@@ -7,26 +7,18 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from enum import Enum
-from typing import NamedTuple, Optional
+from typing import Literal, NamedTuple, Optional, get_args
+
+CommandLevel = Literal["cell", "source", "output"]
 
 
-class CommandLevel(Enum):
-    CELL = "cell"
-    SOURCE = "source"
-    OUTPUT = "output"
+COMMAND_LEVEL_VALUES = tuple(get_args(CommandLevel))
 
 
-COMMAND_LEVEL_VALUES = tuple(command_level.value for command_level in CommandLevel)
+CellCommand = Literal["hide", "collapse", "collapsible"]
 
 
-class CellCommand(Enum):
-    HIDE = "hide"
-    COLLAPSE = "collapse"
-    COLLAPSIBLE = "collapsible"
-
-
-CELL_COMMAND_VALUES = tuple(cell_command.value for cell_command in CellCommand)
+CELL_COMMAND_VALUES = tuple(get_args(CellCommand))
 
 
 class Command(NamedTuple):
@@ -49,9 +41,9 @@ def get_commands(text: str) -> list[Command]:
             commands[command.level].append(command)
 
     return list(
-        Command(level.value, [cmd.commands[0] for cmd in commands[level.value]])
-        for level in CommandLevel
-        if level.value in commands
+        Command(level, [cmd.commands[0] for cmd in commands[level]])
+        for level in COMMAND_LEVEL_VALUES
+        if level in commands
     )
 
 
