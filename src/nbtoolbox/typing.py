@@ -1,5 +1,5 @@
 from pathlib import Path, PosixPath
-from typing import Dict, List, Literal, Optional, TypeVar, Union, TypedDict
+from typing import Dict, List, Literal, Optional, TypedDict, TypeVar, Union
 
 PathOrStr = TypeVar("PathOrStr", Path, PosixPath, str)
 
@@ -8,10 +8,16 @@ Metadata = Dict[str, Union[str, int, "Metadata"]]
 MultilineText = Union[str, List[str]]
 
 
+class Author(TypedDict):
+    name: str
+    email: str
+    github: str
+
+
 class NbMetadata(TypedDict):
     language_info: Metadata
     kernelspec: Metadata
-    authors: Metadata
+    authors: List[Author]
 
 
 class Output(TypedDict):
@@ -26,7 +32,9 @@ class Output(TypedDict):
 
 
 class ExecuteResult(Output):  # output_type = "execute_result"
-    data: Dict[str, MultilineText]  # mimebundle - "A mime-type keyed dictionary of data"
+    data: Dict[
+        str, MultilineText
+    ]  # mimebundle - "A mime-type keyed dictionary of data"
 
 
 class DisplayData(Output):  # output_type = "display_data"
@@ -67,4 +75,4 @@ class Nb(TypedDict):
     nbformat: int
     nbformat_minor: int
     cells: List[Cell]
-    metadata: Metadata
+    metadata: NbMetadata

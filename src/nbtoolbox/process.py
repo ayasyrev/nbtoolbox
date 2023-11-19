@@ -1,6 +1,7 @@
 import copy
 from typing import Optional
-from .typing import Nb, Cell, CodeCell, Metadata, Output, MultilineText
+
+from .typing import Cell, CodeCell, Metadata, MultilineText, Nb, Output
 
 
 def process_nb_metadata(metadata: Metadata) -> Metadata:
@@ -26,6 +27,7 @@ def process_output(output: Output) -> Output:
 def process_code_cell(cell: CodeCell) -> CodeCell:
     cell["source"] = process_source(cell["source"])
     cell["outputs"] = [process_output(output) for output in cell["outputs"]]
+    return cell
 
 
 class Processor:
