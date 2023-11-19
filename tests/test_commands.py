@@ -1,5 +1,4 @@
-from nbtoolbox.commands import get_commands, parse_command, Command
-
+from nbtoolbox.commands import Command, get_commands, parse_command
 
 source_command = "#! source: hide"
 cell_command = "#! cell: hide"

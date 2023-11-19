@@ -53,7 +53,7 @@ def parse_command(line: str) -> Optional[Command]:
         level, command = line[2:].split(":")
         level = level.strip()
         if level in COMMAND_LEVEL_VALUES:
-            return Command(level=level, commands=[command.strip()])
+            return Command(level, commands=[command.strip()])
     else:
         command = line[2:].strip()
         if command in CELL_COMMAND_VALUES:
