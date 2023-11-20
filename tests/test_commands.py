@@ -23,20 +23,31 @@ def test_parse_command():
     command = parse_command("#! wrong_level: source")
     assert command is None
 
-
-def test_get_commands():
-    """test get_commands"""
-    commands = get_commands(source_command)
+    # test get_commands
+    code, commands = get_commands(source_command)
     assert len(commands) == 1
+    assert code == ""
     assert commands[0] == Command("source", ["hide"])
-    commands = get_commands("\n".join([source_command, cell_command]))
+
+    code, commands = get_commands([source_command, "#! "])
+    assert len(commands) == 1
+    assert code == ""
+    assert commands[0] == Command("source", ["hide"])
+
+    code, commands = get_commands("\n".join([source_command, cell_command]))
     assert len(commands) == 2
+    assert code == ""
     assert commands[0] == Command("cell", ["hide"])
     assert commands[1] == Command("source", ["hide"])
 
-    commands = get_commands(
+    code, commands = get_commands(
         "\n".join([source_command, cell_command, cell_command_simple])
     )
     assert len(commands) == 2
     assert commands[0] == Command("cell", ["hide", "collapse"])
     assert commands[1] == Command("source", ["hide"])
+
+    code, commands = get_commands(source_command + "\nsome code\n")
+    assert len(commands) == 1
+    assert code == "some code"
+    assert commands[0] == Command("source", ["hide"])
