@@ -9,6 +9,8 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Literal, NamedTuple, Optional, get_args
 
+from .typing import MultilineText
+
 CommandLevel = Literal["cell", "source", "output"]
 
 
@@ -26,21 +28,24 @@ class Command(NamedTuple):
     commands: list[str]
 
 
-def get_commands(text: str) -> list[Command]:
+def get_commands(text: MultilineText) -> tuple[str, list[Command]]:
     """Parse text for commands.
-    return list of commands"""
+    return text without commands and list of commands"""
     command_lines = []
-    text_lines = text.splitlines()
+    code_lines = []
+    text_lines = text.splitlines() if isinstance(text, str) else text
     for line in text_lines:
         if line.startswith("#!"):
             command_lines.append(line)
+        else:
+            code_lines.append(line)
     commands = defaultdict(list)
     for line in command_lines:
         command = parse_command(line)
         if command is not None:
             commands[command.level].append(command)
 
-    return list(
+    return "\n".join(code_lines), list(
         Command(level, [cmd.commands[0] for cmd in commands[level]])
         for level in COMMAND_LEVEL_VALUES
         if level in commands

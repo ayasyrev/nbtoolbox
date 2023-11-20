@@ -1,7 +1,7 @@
 """Sign notebook."""
 import configparser
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 from .core import read_nb, write_nb
 from .typing import Author, Nb, PathOrStr
