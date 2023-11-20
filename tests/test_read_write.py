@@ -27,6 +27,27 @@ def test_read_nb():
     assert cells[1]["outputs"] == []
 
 
+def test_read_nb_multiline():
+    """test read notebook"""
+    file = Path("tests/test_nbs/test_nb_3.ipynb")
+    nb = read_nb(file)
+    cell_0 = nb["cells"][0]
+    assert isinstance(cell_0["source"], list)
+    assert len(cell_0["source"]) == 2
+    assert cell_0["source"][0] == "Markdown cell.\n"
+
+    code_cell_0 = nb["cells"][2]
+    assert code_cell_0["cell_type"] == "code"
+    assert isinstance(code_cell_0["source"], list)
+    assert len(code_cell_0["source"]) == 3
+
+    outputs = code_cell_0["outputs"]
+    assert len(outputs) == 1
+    assert outputs[0]["name"] == "stdout"
+    assert isinstance(outputs[0]["text"], list)
+    assert len(outputs[0]["text"]) == 3
+
+
 def test_write_nb(tmp_path: Path):
     """test write notebook"""
     file = Path("tests/test_nbs/test_nb_1.ipynb")
@@ -52,11 +73,11 @@ def test_get_nb_names():
     names.sort(key=lambda x: x.name)
     assert names[0] == file
     names = get_nb_names(path)
-    assert len(names) == 2
+    assert len(names) == 3
     names.sort(key=lambda x: x.name)
     assert names[0] == file
     names = get_nb_names(path, filter_hidden=False)
-    assert len(names) == 3
+    assert len(names) == 4
     try:
         get_nb_names("wrong_name")
         assert False
