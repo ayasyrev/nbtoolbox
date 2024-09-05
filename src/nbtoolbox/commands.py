@@ -9,7 +9,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Literal, NamedTuple, Optional, get_args
 
-from .typing import MultilineText
+from .types import MultilineText
 
 CommandLevel = Literal["cell", "source", "output"]
 
