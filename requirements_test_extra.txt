@@ -1,5 +1,5 @@
-coverage[toml]
-nox
 black
 black[jupyter]
+coverage[toml]
 flake8
+nox
