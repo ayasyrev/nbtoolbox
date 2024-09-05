@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from nbtoolbox.core import get_nb_names, read_nb, write_nb
+from nbtoolbox.helpers import get_nb_names, read_nb, write_nb
 
 
 def test_read_nb():

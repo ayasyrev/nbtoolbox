@@ -1,7 +1,7 @@
 import copy
 from typing import Optional
 
-from .typing import Cell, CodeCell, Metadata, MultilineText, Nb, Output
+from .types import Cell, CodeCell, Metadata, MultilineText, Nb, Output
 
 
 def process_nb_metadata(metadata: Metadata) -> Metadata:

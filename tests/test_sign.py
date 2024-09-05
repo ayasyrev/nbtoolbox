@@ -1,7 +1,7 @@
 import copy
 from pathlib import Path
 
-from nbtoolbox.core import read_nb, write_nb
+from nbtoolbox.helpers import read_nb, write_nb
 from nbtoolbox.sign import check_author_exist, get_author, sign_nb, sign_nb_file
 
 test_config = "tests/nbtoolbox_config.ini"

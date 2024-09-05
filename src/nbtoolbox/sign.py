@@ -3,8 +3,8 @@ import configparser
 from pathlib import Path
 from typing import Optional
 
-from .core import read_nb, write_nb
-from .typing import Author, Nb, PathOrStr
+from .helpers import read_nb, write_nb
+from .types import Author, Nb, PathOrStr
 
 
 def read_config(path: Optional[PathOrStr] = None) -> configparser.ConfigParser:
